@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { IsNumber, IsOptional, Min, Max } from 'class-validator';
 
 @Entity('patients')
 export class Patient {
@@ -82,6 +83,35 @@ export class Patient {
 
   @Column('simple-array', { nullable: true })
   other_allergies: string[];
+
+  // Medical Metrics
+  @Column({ type: 'numeric', precision: 3, scale: 1, nullable: true })
+  @IsOptional()
+  @IsNumber({}, { message: 'Temperature must be a number' })
+  @Min(35.0, { message: 'Temperature too low' })
+  @Max(41.0, { message: 'Temperature too high' })
+  temperature: number;
+
+  @Column({ type: 'smallint', nullable: true })
+  @IsOptional()
+  @IsNumber({}, { message: 'Systolic pressure must be a number' })
+  @Min(100, { message: 'Systolic pressure too low' })
+  @Max(150, { message: 'Systolic pressure too high' })
+  bloodPressureSystolic: number;
+
+  @Column({ type: 'smallint', nullable: true })
+  @IsOptional()
+  @IsNumber({}, { message: 'Diastolic pressure must be a number' })
+  @Min(60, { message: 'Diastolic pressure too low' })
+  @Max(100, { message: 'Diastolic pressure too high' })
+  bloodPressureDiastolic: number;
+
+  @Column({ type: 'smallint', nullable: true })
+  @IsOptional()
+  @IsNumber({}, { message: 'Pulse must be a number' })
+  @Min(60, { message: 'Pulse too low' })
+  @Max(130, { message: 'Pulse too high' })
+  pulse: number;
 
   // Passport Info
   @Column()
